@@ -12,10 +12,7 @@ public class Sangokushi {
 		
 		setLookAndFeel();
 		loadAndShowGUI();
-		ExcelParser parser = new ExcelParser();
-		parser.initDataSheets();
-		parser.loadCharacterData();
-		parser.loadCityData();
+		loadGameData();
 	}
 	
     public static void setLookAndFeel() {
@@ -43,5 +40,17 @@ public class Sangokushi {
 				} catch (Exception e) {e.printStackTrace();}
             }
         });
+    }
+    
+    public static void loadGameData() {
+    	new Thread() {
+    		@Override
+    		public void run() {
+	    		ExcelParser parser = new ExcelParser();
+	    		parser.initDataSheets();
+	    		parser.loadCharacterData();
+	    		parser.loadCityData();
+    		}
+    	}.start();
     }
 }

@@ -13,11 +13,23 @@ import com.run.sango.model.ArmyType;
 import com.run.sango.model.Character;
 import com.run.sango.model.City;
 
+/**
+ * This class uses the apachi poi API for parsing an .xls file.
+ * Data sheets are created from an Excel work book and then read
+ * in the application's memory. Character and City object are 
+ * created by using the data from the excel file.
+ * 
+ * @author RuN
+ * @since 08/03/2015
+ */
 public class ExcelParser {
 	
 	private HSSFSheet characterData;
 	private HSSFSheet cityData;
 	
+	/**
+	 * Loads the excel work book and it's excel sheets into the memory.
+	 */
 	public void initDataSheets() {
 		try (
 			FileInputStream file = new FileInputStream(new File("resources/character_data.xls"));
