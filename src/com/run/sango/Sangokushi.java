@@ -11,8 +11,8 @@ public class Sangokushi {
 	public static void main (String[] args) {
 		
 		setLookAndFeel();
-		loadAndShowGUI();
 		loadGameData();
+		loadAndShowGUI();
 	}
 	
     public static void setLookAndFeel() {
@@ -32,7 +32,6 @@ public class Sangokushi {
         	@Override
             public void run() {
         		try {
-        			
         			final StartController controller = new StartController();
         			final StartFrame frame = new StartFrame(controller);
         			controller.addView(frame);

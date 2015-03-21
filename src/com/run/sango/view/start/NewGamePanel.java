@@ -37,6 +37,15 @@ public class NewGamePanel extends JPanel {
 		newLabelGbc.gridy = 0;
 		add(newLb, newLabelGbc);
 		
+		JButton startBtn = new JButton("Start Game");
+		startBtn.setFont(new Font("SansSerif", Font.PLAIN, 18));
+		startBtn.addActionListener(StartController.startGameListener);
+		GridBagConstraints startBtnGbc = new GridBagConstraints();
+		startBtnGbc.insets = new Insets(0, 0, 5, 5);
+		startBtnGbc.gridx = 2;
+		startBtnGbc.gridy = 1;
+		add(startBtn, startBtnGbc);
+		
 		JButton backBtn = new JButton("Back");
 		backBtn.setActionCommand("Start");
 		backBtn.addActionListener(controller.getButtonListener());

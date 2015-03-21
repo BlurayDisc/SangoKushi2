@@ -15,9 +15,6 @@ import com.run.sango.controller.StartController;
 
 public class StartPanel extends JPanel {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1862568131915209686L;
 
 	/**
