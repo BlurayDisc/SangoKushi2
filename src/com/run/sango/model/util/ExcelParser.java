@@ -1,17 +1,17 @@
 package com.run.sango.model.util;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import com.run.sango.controller.GameController;
+import com.run.sango.model.ArmyType;
+import com.run.sango.model.Character;
+import com.run.sango.model.City;
 
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
 
-import com.run.sango.controller.GameController;
-import com.run.sango.model.ArmyType;
-import com.run.sango.model.Character;
-import com.run.sango.model.City;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * This class uses the apachi poi API for parsing an .xls file.
@@ -23,7 +23,8 @@ import com.run.sango.model.City;
  * @since 08/03/2015
  */
 public class ExcelParser {
-	
+
+	private static final String filename = "resources/character_data.xls";
 	private HSSFSheet characterData;
 	private HSSFSheet cityData;
 	
@@ -32,8 +33,9 @@ public class ExcelParser {
 	 */
 	public void initDataSheets() {
 		try (
-			FileInputStream file = new FileInputStream(new File("resources/character_data.xls"));
-			HSSFWorkbook excelFile = new HSSFWorkbook(file)) {   
+			final InputStream is = new FileInputStream(filename);
+			HSSFWorkbook excelFile = new HSSFWorkbook(is)
+		) {
 			characterData = excelFile.getSheet("character");
 			cityData = excelFile.getSheet("city");
 		} catch (IOException ioe) {ioe.printStackTrace();}
@@ -105,9 +107,9 @@ public class ExcelParser {
 	private ArmyType parseType(String rawType) {
 		final ArmyType type;
 		switch(rawType) {
-			case "Ç¹±ø": type = ArmyType.SpearMan; break;
-			case "Æï±ø": type = ArmyType.LightCalvary; break;
-			case "¹­±ø": type = ArmyType.Archer; break;
+			case "æžªå…µ": type = ArmyType.SpearMan; break;
+			case "éª‘å…µ": type = ArmyType.LightCalvary; break;
+			case "å¼“å…µ": type = ArmyType.Archer; break;
 			default: type = ArmyType.SpearMan; break;
 		}
 		return type;

@@ -1,12 +1,11 @@
 package com.run.sango.controller;
 
+import com.run.sango.model.Character;
+import com.run.sango.model.City;
+import com.run.sango.view.Tile;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.run.sango.model.City;
-import com.run.sango.model.Character;
-import com.run.sango.view.game.GameFrame;
-import com.run.sango.view.game.Tile;
 
 public class GameController {
 	
@@ -18,10 +17,6 @@ public class GameController {
 	
 	public GameController() {
 
-	}
-	
-	public void addView(GameFrame frame) {
-		
 	}
 	
 	public static void printCharacterList() {

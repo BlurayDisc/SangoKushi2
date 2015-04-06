@@ -1,9 +1,6 @@
 package com.run.sango.model;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.geom.Rectangle2D;
 
 
@@ -35,6 +32,11 @@ public class City {
 	public City(int id, String name) {
 		this.id = id;
 		this.name = name;
+	}
+	
+	@Override
+	public String toString() {
+		return "Name: " + name + " City ID: " + id;
 	}
 	
     public void draw(Graphics g, Color forceColour) {

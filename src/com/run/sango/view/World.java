@@ -1,6 +1,6 @@
-package com.run.sango.view.game;
+package com.run.sango.view;
 
-import java.awt.Graphics;
+import java.awt.*;
 
 public class World {
 	
@@ -11,7 +11,7 @@ public class World {
 		this.width = width;
 		this.height = height;
 		this.tiles = new int[width][height];
-		fillTiles(Tile.TYPE_DIRT);
+		fillTiles(Tile.TYPE_ROCK);
 	}
 	
 	/**
@@ -33,7 +33,7 @@ public class World {
 		for (int i = 0; i < width; i++) {
 			for (int j = 0; j < height; j++) {
 				final Tile tile = Tile.tiles[tiles[i][j]];
-				tile.draw(i * Tile.WIDTH, j * Tile.WIDTH, g);
+				tile.render(i * Tile.WIDTH, j * Tile.WIDTH, g);
 			}
 		}
 	}

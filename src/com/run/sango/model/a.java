@@ -1,16 +1,19 @@
 package com.run.sango.model;
 
-import java.awt.Graphics;
+import java.awt.*;
 
 public class a {
-
 	
-	public void a(Graphics g) {
+	public a() {
+		
+	}
+
+	public void asd(Graphics g) {
         // city = new City(Name)
-        // setNeighbours(±±, ÄÏ, Î÷, ¶«)
-        // setNeighbours(±±, ÄÏ, Î÷, ¶«, Î÷±±, ¶«±±, Î÷ÄÏ, ¶«ÄÏ)
+        // setNeighbours(ï¿½ï¿½, ï¿½ï¿½, ï¿½ï¿½, ï¿½ï¿½)
+        // setNeighbours(ï¿½ï¿½, ï¿½ï¿½, ï¿½ï¿½, ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½, ï¿½ï¿½ï¿½ï¿½)
         
-        // ´¨Êñ
+        // ï¿½ï¿½ï¿½ï¿½
 //        yunnan.setMapCoordinate(64, 555);
 //        yunnan.setNeighbours(CITY_EMPTY, CITY_EMPTY, CITY_EMPTY, CITY_EMPTY, CITY_EMPTY, CITY_JIANGZHOU, CITY_EMPTY, CITY_EMPTY);
 //        // yunnan.setNewNeighbours(Neighbour.EMPTY, Neighbour.EMPTY, Neighbour.EMPTY, Neighbour.EMPTY, Neighbour.EMPTY, Neighbour.JIANGZHOU, Neighbour.EMPTY, Neighbour.EMPTY);
@@ -23,7 +26,7 @@ public class a {
 //        zitong.setMapCoordinate(47, 402);
 //        zitong.setNeighbours(CITY_HANZHONG, CITY_CHENGDU, CITY_EMPTY, CITY_EMPTY, CITY_EMPTY, CITY_EMPTY, CITY_EMPTY, CITY_JIANGZHOU);
 //        
-//        // ÖÐÔ­
+//        // ï¿½ï¿½Ô­
 //        xuchang.setMapCoordinate(429, 355);
 //        xuchang.setNeighbours(CITY_PUYANG, CITY_EMPTY, CITY_WAN, CITY_EMPTY, CITY_LUOYANG, CITY_EMPTY, CITY_EMPTY, CITY_RUNAN);
 //        wan.setMapCoordinate(362, 362);
@@ -43,7 +46,7 @@ public class a {
 //        shouchun.setMapCoordinate(551, 397);
 //        shouchun.setNeighbours(CITY_XIAOPEI, CITY_EMPTY, CITY_RUNAN, CITY_EMPTY, CITY_EMPTY, CITY_XIAPI, CITY_LUJIANG, CITY_JIANYE);
 //        
-//        // Î÷Á¹
+//        // ï¿½ï¿½ï¿½ï¿½
 //        xiliang.setMapCoordinate(47, 254);
 //        xiliang.setNeighbours(CITY_EMPTY, CITY_EMPTY, CITY_EMPTY, CITY_EMPTY, CITY_EMPTY, CITY_EMPTY, CITY_EMPTY, CITY_TIANSHUI);
 //        tianshui.setMapCoordinate(102, 316);
@@ -53,7 +56,7 @@ public class a {
 //        hanzhong.setMapCoordinate(96, 364);
 //        hanzhong.setNeighbours(CITY_EMPTY, CITY_ZITONG, CITY_EMPTY, CITY_SHANGYONG, CITY_TIANSHUI, CITY_CHANGAN, CITY_EMPTY, CITY_EMPTY);
 //        
-//        // ¾£ÖÝ
+//        // ï¿½ï¿½ï¿½ï¿½
 //        xinye.setMapCoordinate(397, 395);
 //        xinye.setNeighbours(CITY_EMPTY, CITY_EMPTY, CITY_EMPTY, CITY_EMPTY, CITY_WAN, CITY_RUNAN, CITY_XIANGYANG, CITY_JIANGXIA);
 //        jiangxia.setMapCoordinate(426, 434);
@@ -73,7 +76,7 @@ public class a {
 //        xiangyang.setMapCoordinate(335, 405);
 //        xiangyang.setNeighbours(CITY_EMPTY, CITY_JIANGLING, CITY_EMPTY, CITY_JIANGXIA, CITY_SHANGYONG, CITY_XINYE, CITY_EMPTY, CITY_EMPTY);
 //        
-//        // ÎâÔ½
+//        // ï¿½ï¿½Ô½
 //        chaisang.setMapCoordinate(494, 501);
 //        chaisang.setNeighbours(CITY_LUJIANG, CITY_EMPTY, CITY_JIANGLING, CITY_KUAIJI, CITY_JIANGXIA, CITY_JIANYE, CITY_CHANGSHA, CITY_EMPTY);
 //        lujiang.setMapCoordinate(507, 437);
@@ -85,7 +88,7 @@ public class a {
 //        kuaiji.setMapCoordinate(650, 503);
 //        kuaiji.setNeighbours(CITY_WU, CITY_EMPTY, CITY_CHAISANG, CITY_EMPTY, CITY_EMPTY, CITY_EMPTY, CITY_EMPTY, CITY_EMPTY);
 //        
-//        // ÓÄÖÝ
+//        // ï¿½ï¿½ï¿½ï¿½
 //        xiangping.setMapCoordinate(758, 87);
 //        xiangping.setNeighbours(CITY_EMPTY, CITY_EMPTY, CITY_EMPTY, CITY_EMPTY, CITY_EMPTY, CITY_EMPTY, CITY_BEIPING, CITY_EMPTY);
 //        beiping.setMapCoordinate(552, 152);
