@@ -23,7 +23,7 @@ public class City extends CityModel {
 	
 	private int baseFoodIncome;
 	private int baseGoldIncome;
-	private final List<Character> generals = new ArrayList<>();
+	private final List<General> generals = new ArrayList<>();
 	private final int[] soldiers = new int[UnitType.values().length];
 	private final int[] population = new int[FamilyType.values().length];
 

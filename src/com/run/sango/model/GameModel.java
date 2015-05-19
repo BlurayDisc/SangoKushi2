@@ -3,8 +3,8 @@ package com.run.sango.model;
 
 public abstract class GameModel {
     
-	protected final int id;
-    protected String name;
+	public final int id;
+    public String name;
     
     public GameModel(int id, String name) {
     	this.id = id;

@@ -5,20 +5,16 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.ConsoleHandler;
-import java.util.logging.Formatter;
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import java.util.logging.SimpleFormatter;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
 
-import com.run.sango.controller.GameController;
-import com.run.sango.model.Character;
 import com.run.sango.model.City;
+import com.run.sango.model.Force;
+import com.run.sango.model.General;
 import com.run.sango.model.UnitType;
 
 /**
@@ -33,8 +29,8 @@ import com.run.sango.model.UnitType;
  */
 public class ExcelParser {
 
-	private static final Logger logger = Logger.getLogger("parserLogger");
-	private static final String FILE_NAME = "resources/character_data.xls";
+	private static final Logger logger = LogManager.getLogger(ExcelParser.class);
+	private static final String FILE_NAME = "src/resources/game_data.xls";
 	private HSSFSheet characterSheet;
 	private HSSFSheet citySheet;
 	
@@ -63,7 +59,7 @@ public class ExcelParser {
 					citySheet.getSheetName() + " - loaded.");
 			
 		} catch (IOException ioe) {
-			logger.warning("Unable to locate file: " + FILE_NAME + ioe.getCause());
+			logger.warn("Unable to locate file: " + FILE_NAME + ioe.getCause());
 		} finally {
 			logger.info(HSSFWorkbook.class.getSimpleName() + " " +
 					FILE_NAME + " " + "successfully closed.");
@@ -75,33 +71,26 @@ public class ExcelParser {
 	}
 	
 	private static void initLogger() {
-//		java.util.logging.MemoryHandler.level=INFO;
-//		java.util.logging.MemoryHandler.formatter=java.util.logging.SimpleFormatter;
-		final Handler handler = new ConsoleHandler();
-		handler.setLevel(Level.FINEST);
-		final Formatter formatter = new SimpleFormatter();
-		handler.setFormatter(formatter);
-		logger.addHandler(handler);
+		
 	}
 
 	/**
 	 * Parses the Character data from the Excel file.
 	 */
-	public void loadCharacterData() {
-		final List<Character> list = new ArrayList<>(500);
+	public List<General> loadCharacterData() {
+		final List<General> list = new ArrayList<>(584);
         for (int i = 1; i < 585; i++) {
-        	final Character c = createCharacter(i);
+        	final General c = createCharacter(i);
         	list.add(c);
-        	logger.finest(c.toString());
+	    	logger.info(c);
         }
-       final GameController gc = GameController.getInstance();
-       gc.setCharacterData(list);
+        return list;
     }
 	
 	/**
 	 * Parses the City data from the excel sheet.
 	 */
-	public void loadCityData() {
+	public List<City> loadCityData() {
 		final List<City> list = new ArrayList<>(40);
 		for (int i = 1; i < 41; i++) {
 	    	final Row row = citySheet.getRow(i);
@@ -109,10 +98,13 @@ public class ExcelParser {
 	    	final String name = row.getCell(1).getStringCellValue();
 	    	final City c = new City(id, name);
 	    	list.add(c);
-	    	logger.finest(c.toString());
 		}
-		final GameController gc = GameController.getInstance();
-		gc.setCityData(list);
+		return list;
+	}
+	
+	public List<Force> loadForceData() {
+		final List<Force> list = new ArrayList<>(30);
+		return list;
 	}
 	
 	/**
@@ -122,24 +114,27 @@ public class ExcelParser {
 	 * excel sheet.
 	 * @return The General (Character)
 	 */
-	private Character createCharacter(int i) {
+	private General createCharacter(int i) {
 		
     	final Row row = characterSheet.getRow(i);
     	final int id = (int) row.getCell(0).getNumericCellValue();
     	final String name = row.getCell(1).getStringCellValue();
-    	final byte leadership = (byte) row.getCell(19).getNumericCellValue();
-    	final byte strength = (byte) row.getCell(20).getNumericCellValue();
-    	final byte intelligence = (byte) row.getCell(21).getNumericCellValue();
-    	final byte politics = (byte) row.getCell(22).getNumericCellValue();
-    	final String type = row.getCell(27).getStringCellValue();
+    	final String type = row.getCell(2).getStringCellValue();
+    	final String ability = row.getCell(3).getStringCellValue();
+    	final byte leadership = (byte) row.getCell(4).getNumericCellValue();
+    	final byte strength = (byte) row.getCell(5).getNumericCellValue();
+    	final byte intelligence = (byte) row.getCell(6).getNumericCellValue();
+    	final byte politics = (byte) row.getCell(7).getNumericCellValue();
+    	final int imageIndex = (int) row.getCell(8).getNumericCellValue();
     	
-    	final Character c = new Character(id, name);
+    	final General c = new General(id, name);
+    	parseAbility(ability);
     	c.armyType = parseType(type);
     	c.leadership = leadership;
     	c.strength = strength;
     	c.intelligence = intelligence;
     	c.politics = politics;
-    	
+    	c.imageIndex = imageIndex;
     	return c;
 	}
 	
@@ -152,5 +147,9 @@ public class ExcelParser {
 			default: type = UnitType.SpearMan; break;
 		}
 		return type;
+	}
+	
+	private void parseAbility(String ability) {
+		
 	}
 }

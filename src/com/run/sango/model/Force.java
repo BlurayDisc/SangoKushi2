@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class Force extends GameModel {
 	
-    private final List<Character> characterList = new ArrayList<>(30);
+    private final List<General> characterList = new ArrayList<>(30);
     private final List<City> cities = new ArrayList<>(5);
     private City primaryCity;
     private Color forceColour;
@@ -60,7 +60,7 @@ public class Force extends GameModel {
         cities.add(city);
     }
     
-    public List<Character> getCharacterList() {
+    public List<General> getCharacterList() {
         return characterList;
     }
     
