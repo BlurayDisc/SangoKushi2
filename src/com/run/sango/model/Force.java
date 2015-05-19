@@ -1,17 +1,18 @@
 package com.run.sango.model;
 
-import java.awt.*;
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
+ * 
  * @author RuN
  */
-public class Force {
-    private String forceName;
+public class Force extends GameModel {
+	
     private final List<Character> characterList = new ArrayList<>(30);
-    private final List<City>  cityList = new ArrayList<>(5);
+    private final List<City> cities = new ArrayList<>(5);
+    private City primaryCity;
     private Color forceColour;
     private int gold;
     private int food;
@@ -21,16 +22,12 @@ public class Force {
     private int soldierIncome;
     private int population;
        
-    public Force(String forceName) {
-        this.forceName = forceName;
+    public Force(int id, String name) {
+    	super(id, name);
     }
     
-    public City getPrimaryCity() {
-        return cityList.get(0);
-    }
-    
-    public String getPrimaryCityName() {
-        return cityList.get(0).name;
+    public String getPrimaryCity() {
+        return primaryCity.getName();
     }
         
     public void increaseGold(int amount) {
@@ -43,24 +40,24 @@ public class Force {
     
     public void calcSoldier() {
         soldier = 0;        
-        for (int i = 0; i < cityList.size(); i++) {
-            soldier = soldier + cityList.get(i).soldiers.getTotal();
+        for (City city: cities) {
+            soldier = soldier + city.getSoldiers();
         }
     }
     
     public void calcPopulation() {
         population = 0;
-        for (int i = 0; i < cityList.size(); i++) {
-            population = population + cityList.get(i).population;
+        for (City city: cities) {
+            population = population + city.getPopulation();
         }
     }
     
     public boolean owns(City city) {
-        return cityList.contains(city);
+        return cities.contains(city);
     }
     
     public void add(City city) {
-        cityList.add(city);
+        cities.add(city);
     }
     
     public List<Character> getCharacterList() {
@@ -68,15 +65,15 @@ public class Force {
     }
     
     public List<City> getCityList() {
-        return cityList;
+        return cities;
     }
         
     public String getForceName() {
-        return forceName;
+        return name;
     }
     
-    public void setForceName(String name) {
-        forceName = name;
+    public void newForceName(String name) {
+        this.name = name;
     }
     
     public int getGold() {
@@ -133,12 +130,5 @@ public class Force {
     
     public Color getForceColor() {
         return forceColour;
-    }
-    
-    // Draw every city owned by this force
-    public void drawCities(Graphics g) {
-        for (int i = 0; i < cityList.size(); i++) {
-            getCityList().get(i).draw(g, forceColour);
-        }
     }
 }

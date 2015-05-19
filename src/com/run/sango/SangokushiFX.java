@@ -1,9 +1,9 @@
 package com.run.sango;
 
-import com.run.sango.controller.initController;
-import com.run.sango.view.InitScene;
-import com.run.sango.view.LoadScene;
-import com.run.sango.view.StartScene;
+import com.run.sango.controller.StageController;
+import com.run.sango.view.scene.InitScene;
+import com.run.sango.view.scene.LoadScene;
+import com.run.sango.view.scene.StartScene;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -18,7 +18,7 @@ public class SangokushiFX extends Application {
 	public static final int WINDOW_HEIGHT = 600;
 	
 	public Stage primaryStage;
-	public static final initController controller = new initController();
+	public static final StageController controller = new StageController();
 
     public static void main(String[] args) {
         launch(args);
@@ -28,9 +28,9 @@ public class SangokushiFX extends Application {
     public void start(Stage primaryStage) {
     	
     	this.primaryStage = primaryStage;
-    	InitScene initScene = new InitScene();
-    	StartScene startScene = new StartScene();
-    	LoadScene loadScene = new LoadScene();
+    	final InitScene initScene = new InitScene();
+    	final StartScene startScene = new StartScene();
+    	final LoadScene loadScene = new LoadScene();
     	
     	controller.addViews(primaryStage, initScene, startScene, loadScene);
 

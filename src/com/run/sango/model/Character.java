@@ -1,20 +1,21 @@
 package com.run.sango.model;
 
-public class Character {
+public class Character extends GameModel {
 
-	public int id;
-	public final String name;
-	public ArmyType armyType;
+	public UnitType armyType;
 	public byte leadership, strength, intelligence, politics;
 	
 	public Character(int id, String name) {
-		this.id = id;
-		this.name = name;
+		super(id, name);
 	}
 	
 	@Override
 	public String toString() {
-		return "Name: " + name + " Army: " + armyType + " Leader: " + leadership + " Strength: " + strength +
-				" Intelligence: " + intelligence + " Politics: " + politics;
+		return super.toString() + " " +
+			"Army[" + armyType + "] " +
+			"Leader[" + leadership + "] " +
+			"Strength[" + strength + "] " +
+			"Intelligence[" + intelligence + "] " +
+			"Politics[" + politics + "]";
 	}
 }

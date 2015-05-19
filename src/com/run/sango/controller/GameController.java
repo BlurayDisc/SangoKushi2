@@ -4,31 +4,37 @@ import com.run.sango.model.Character;
 import com.run.sango.model.City;
 import com.run.sango.view.Tile;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
+/**
+ * The main Controller for the GameModel.
+ * <p> Stores and holds game model and game engine related data.
+ * 
+ * @author RuN
+ * @since 18/05/2015
+ */
 public class GameController {
 	
-	public static final List<Character> characterList = new ArrayList<>(445);
-	public static final List<City> cityList = new ArrayList<>(40);
+	private static final Logger logger = Logger.getLogger(GameController.class.getSimpleName());
+	private List<Character> characterList;
+	private List<City> cityList;
 	
 	public int frameWidth, frameHeight;
 	public int worldWidth, worldHeight;
 	
-	public GameController() {
-
+	private static final GameController instance = new GameController();
+	
+	private GameController() {}
+	
+	public static GameController getInstance() {
+		return instance;
 	}
 	
-	public static void printCharacterList() {
-		for (Character character: characterList) {
-			System.out.println(character);
-		}
-	}
-
-	public static void printCityList() {
-		for (City city: cityList) {
-			System.out.println(city);
-		}
+	public void loadGameData() {
+		
+        final GameData loader = new GameData();
+        loader.run();
 	}
 	
 	/**
@@ -42,5 +48,22 @@ public class GameController {
 		worldHeight = vertial;
 		frameWidth = worldWidth * Tile.WIDTH;
 		frameHeight = worldHeight * Tile.HEIGHT;
+	}
+	
+	public void setCharacterData(List<Character> data) {
+		this.characterList = data;
+	}
+	
+	public void setCityData(List<City> data) {
+		this.cityList = data;
+	}
+	
+	public void logProgress() {
+		for (Character character: characterList) {
+			logger.info(character.toString());
+		}
+		for (City city: cityList) {
+			logger.info(city.toString());
+		}
 	}
 }

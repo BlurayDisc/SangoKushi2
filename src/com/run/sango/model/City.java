@@ -1,107 +1,86 @@
 package com.run.sango.model;
 
-import java.awt.*;
-import java.awt.geom.Rectangle2D;
-
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
 *
-* @author RuN
+* <p> Description: This class contains implementation for the
+* City model. 
+* <p> Each City has:
+* <p>	- an unique name and id.
+* <p> 	- 1 to 8 neighbors.
+* <p> 	- A list of Characters;
+* <p> 	- Population
+* <p> 	- Soldiers
+* <p> 	- It's own food and gold income.
 * 
-* Description: This class is a model for City. 
-*                      Each City has:
-*                       - 1 to 8 neighboring cities.
-*                       - A list of Characters;
-*                       - A number of Population
-*                       - A number of Soldiers
-*                       - It's own food and gold income.
+* @author RuN
+* @since 13/05/2015
 */
-public class City {
+public class City extends CityModel {
 	
-	public final int id;
-	public final String name;
-	public int population;
-	public final SoldierData soldiers = new SoldierData();
-	
-    public final int length = 25;
-    public final int offset = 1;
-    // city location on GamePanel, x-coordinate and y-coordinate
-    public int x, y;
-    public final Rectangle2D rectangle = new Rectangle2D.Double(x, y, length, length);
+	private int baseFoodIncome;
+	private int baseGoldIncome;
+	private final List<Character> generals = new ArrayList<>();
+	private final int[] soldiers = new int[UnitType.values().length];
+	private final int[] population = new int[FamilyType.values().length];
 
 	public City(int id, String name) {
-		this.id = id;
-		this.name = name;
+		super(id, name);
+		Arrays.fill(soldiers, 0);
+		Arrays.fill(population, 0);
 	}
 	
-	@Override
-	public String toString() {
-		return "Name: " + name + " City ID: " + id;
+	/**
+	 * Returns the total number of generals 
+	 * in this city.
+	 * @return
+	 */
+	public int getNumGenerals() {
+		return generals.size();
 	}
 	
-    public void draw(Graphics g, Color forceColour) {
-        
-        // convert to Graphics2D
-        Graphics2D g2 = (Graphics2D)g;
-        
-        // set border size
-        g2.setStroke(new BasicStroke(2));
-
-        // fill the square
-        g2.setPaint(forceColour);
-        g2.fill(rectangle);
-        
-        // upper line
-        g2.setPaint(forceColour.brighter());
-        g2.drawLine(x + offset, y + offset, x + length, y + offset);
-        
-        // bottom line
-        g2.setPaint(forceColour.darker());
-        g2.drawLine(x + offset, y + length, x + length - offset, y + length);
-        
-        // left line
-        g2.setPaint(forceColour.darker());
-        g2.drawLine(x + offset, y + offset, x + offset, y + length);
-        
-        // right line
-        g2.setPaint(forceColour.brighter());
-        g2.drawLine(x + length, y + offset, x + length, y + length);
-        
-        // making the button more 3D.
-        g2.setStroke(new BasicStroke(1));
-        g2.setPaint(forceColour.brighter());
-        g2.drawLine(x + offset, y, x + offset + offset, y);
-        g2.setPaint(forceColour.darker());
-        g2.drawLine(x + length - offset - offset, y + length, x + length - offset, y + length);
-    }
-    
-    public void drawPressed(Graphics g, Color forceColour) {
-        
-        // convert to Graphics2D
-        Graphics2D g2 = (Graphics2D)g;
-        
-        // set border size
-        g2.setStroke(new BasicStroke(2));
-
-        // fill the square
-        g2.setPaint(forceColour);
-        g2.fill(rectangle);
-        
-        // upper line
-        g2.setPaint(forceColour.darker().darker());
-        g2.drawLine(x + offset, y + offset, x + length, y + offset);
-        
-        // bottom line
-        g2.setPaint(forceColour.darker().darker());
-        g2.drawLine(x + offset, y + length, x + length - offset, y + length);
-        
-        // left line
-        g2.setPaint(forceColour.darker().darker());
-        g2.drawLine(x + offset, y + offset, x + offset, y + length);
-        
-        // right line
-        g2.setPaint(forceColour.darker().darker());
-        g2.drawLine(x + length, y + offset, x + length, y + length);
-    }
-
+	/**
+	 * Gets the total number of soldiers.
+	 * @return
+	 */
+	public int getSoldiers() {
+		int t = 0;
+		for(int s: soldiers) {
+			t += s;
+		}
+		return t;
+	}
+	
+	/**
+	 * Gets the total number of populations.
+	 * @return
+	 */
+	public int getPopulation() {
+		int t = 0;
+		for (int p: population) {
+			t += p;
+		}
+		return t;
+	}
+	
+	/**
+	 * Gets the total food income of this city.
+	 * @return
+	 */
+	public int getFoodIncome() {
+		final int numMerchant = population[FamilyType.Merchant.index];
+		return baseFoodIncome + numMerchant * 10;
+	}
+	
+	/**
+	 * Gets the total gold income of this city.
+	 * @return
+	 */
+	public int getGoldIncome() {
+		final int numFarmer = population[FamilyType.Farmer.index];
+		return baseGoldIncome + numFarmer * 10;
+	}
 }
