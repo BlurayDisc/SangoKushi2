@@ -5,6 +5,7 @@ import com.run.sango.controller.SceneType;
 import com.run.sango.controller.data.GameData;
 import com.run.sango.model.General;
 
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -18,10 +19,10 @@ public class StartScene extends Scene {
 	public StartScene() {
 		
 		super(new VBox(20), SangokushiFX.WINDOW_WIDTH, SangokushiFX.WINDOW_HEIGHT);
-		this.getStylesheets().add("com/run/sango/view/menuStyle.css");
+		getStylesheets().add("com/run/sango/view/menuStyle.css");
 		
 		VBox layout = (VBox) getRoot();
-		setRoot(layout);
+		layout.setAlignment(Pos.CENTER);
 		
 		ImageView imageView = new ImageView();
 		
@@ -42,12 +43,13 @@ public class StartScene extends Scene {
 		
 	    Button backButton = new Button("Back");
 	    backButton.getStyleClass().add("button2");
-	    backButton.setPrefSize(100, 50);
 	    backButton.setOnAction(event -> 
 	    	SangokushiFX.controller.switchScene(SceneType.init)
 	    );
 	    
 	    layout.getChildren().addAll(startButton, nextButton, backButton, imageView);
 	}
+	
+	
 
 }

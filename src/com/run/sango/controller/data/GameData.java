@@ -34,8 +34,15 @@ public class GameData {
 	private static List<City> cities;
 	private static List<General> characters;
 	
+	/**
+	 * Loads game data in a worker thread.
+	 * <p> The runnable used for the worker thread is the wrapped 
+	 * static LoadGameDataTask class.
+	 */
 	public static void load() {
-		new LoadGameDataTask().run();
+		final Thread t = new Thread(new LoadGameDataTask());
+		t.setName("GameData");
+		t.start();
 	}
 	
 	public static List<Force> getForces() {
@@ -128,6 +135,10 @@ public class GameData {
 	}
 	
 	static class LoadGameDataTask extends Task<Void> {
+		
+		LoadGameDataTask() {
+			super.updateTitle("Data");
+		}
 		
 		@Override
 		protected Void call() throws Exception {
