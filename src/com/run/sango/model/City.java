@@ -1,8 +1,8 @@
 package com.run.sango.model;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
 *
@@ -23,14 +23,17 @@ public class City extends CityModel {
 	
 	private int baseFoodIncome;
 	private int baseGoldIncome;
-	private final List<General> generals = new ArrayList<>();
+	private final Map<Integer, Hero> heroes = new HashMap<>();
 	private final int[] soldiers = new int[UnitType.values().length];
 	private final int[] population = new int[FamilyType.values().length];
 
-	public City(int id, String name) {
-		super(id, name);
+	public City() {
 		Arrays.fill(soldiers, 0);
 		Arrays.fill(population, 0);
+	}
+	
+	public void add(Hero hero) {
+		heroes.put(hero.id, hero);
 	}
 	
 	/**
@@ -38,8 +41,8 @@ public class City extends CityModel {
 	 * in this city.
 	 * @return
 	 */
-	public int getNumGenerals() {
-		return generals.size();
+	public int getNumHeroes() {
+		return heroes.size();
 	}
 	
 	/**

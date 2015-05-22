@@ -3,12 +3,17 @@ package com.run.sango.model;
 
 public abstract class GameModel {
     
-	public final int id;
+	public int id;
     public String name;
     
     public GameModel(int id, String name) {
     	this.id = id;
     	this.name = name;
+    }
+    
+    public GameModel() {
+    	id = 0;
+    	name = null;
     }
     
 	/**

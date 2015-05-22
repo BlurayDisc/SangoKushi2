@@ -9,10 +9,6 @@ import com.run.sango.model.GameModel;
 public class Node extends GameModel implements Linkedable {
 	
 	private final Map<Direction, Node> nodemap = new HashMap<>();
-	
-	public Node(int id, String name) {
-		super(id, name);
-	}
 
 	@Override
 	public void attach(Node node, Direction property) {

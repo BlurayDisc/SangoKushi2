@@ -1,6 +1,6 @@
 package com.run.sango.controller;
 
-import com.run.sango.model.General;
+import com.run.sango.model.Hero;
 import com.run.sango.model.City;
 import com.run.sango.view.Tile;
 
@@ -17,7 +17,7 @@ import java.util.logging.Logger;
 public class GameController {
 	
 	private static final Logger logger = Logger.getLogger(GameController.class.getSimpleName());
-	private List<General> characterList;
+	private List<Hero> characterList;
 	private List<City> cityList;
 	
 	public int frameWidth, frameHeight;
@@ -44,7 +44,7 @@ public class GameController {
 		frameHeight = worldHeight * Tile.HEIGHT;
 	}
 	
-	public void setCharacterData(List<General> data) {
+	public void setCharacterData(List<Hero> data) {
 		this.characterList = data;
 	}
 	
@@ -53,7 +53,7 @@ public class GameController {
 	}
 	
 	public void logProgress() {
-		for (General character: characterList) {
+		for (Hero character: characterList) {
 			logger.info(character.toString());
 		}
 		for (City city: cityList) {

@@ -8,7 +8,7 @@ import org.apache.logging.log4j.Logger;
 import javafx.concurrent.Task;
 import javafx.scene.image.Image;
 
-import com.run.sango.model.General;
+import com.run.sango.model.Hero;
 import com.run.sango.model.City;
 import com.run.sango.model.Force;
 import com.run.sango.model.util.ExcelParser;
@@ -32,7 +32,7 @@ public class GameData {
 	
 	private static List<Force> forces;
 	private static List<City> cities;
-	private static List<General> characters;
+	private static List<Hero> heroes;
 	
 	/**
 	 * Loads game data in a worker thread.
@@ -40,9 +40,22 @@ public class GameData {
 	 * static LoadGameDataTask class.
 	 */
 	public static void load() {
+
 		final Thread t = new Thread(new LoadGameDataTask());
-		t.setName("GameData");
+		t.setName("WorkerThread");
 		t.start();
+	}
+	
+	public static void print() {
+		int total = 0;
+		for (int i = 0; i < cities.size(); i++) {
+			City city = cities.get(i);
+			logger.info(
+				city.name + " " +
+				"heroes : " + city.getNumHeroes());
+			total += city.getNumHeroes();
+		}
+		logger.info("Total: " + total);
 	}
 	
 	public static List<Force> getForces() {
@@ -53,8 +66,8 @@ public class GameData {
 		return cities;
 	}
 
-	public static List<General> getGenerals() {
-		return characters;
+	public static List<Hero> getHeroes() {
+		return heroes;
 	}
 
 	/**
@@ -62,7 +75,7 @@ public class GameData {
 	 * @param general The General.
 	 * @return The Portrait as a javafx.scene.image object.
 	 */
-	public static Image getPortrait(General general) {
+	public static Image getPortrait(Hero general) {
 		final String filename = toImagePath(
 				general.name, 
 				general.imageIndex);
@@ -74,7 +87,7 @@ public class GameData {
 	 * @param general The General.
 	 * @return The Portrait as a javafx.scene.image object.
 	 */
-	public static Image getFacialPortrait(General general) {
+	public static Image getFacialPortrait(Hero general) {
 		final String filename = toImagePath(
 				general.name, 
 				general.imageIndex);
@@ -134,11 +147,7 @@ public class GameData {
 		return img;
 	}
 	
-	static class LoadGameDataTask extends Task<Void> {
-		
-		LoadGameDataTask() {
-			super.updateTitle("Data");
-		}
+	private static class LoadGameDataTask extends Task<Void> {
 		
 		@Override
 		protected Void call() throws Exception {
@@ -147,11 +156,24 @@ public class GameData {
 			parser.parseFile(DATA_FILE_PATH);
 			parser.initDataSheets();
 			
-			characters = parser.loadCharacterData();
+			heroes = parser.loadHeroData();
 			cities = parser.loadCityData();
 			forces = parser.loadForceData();
 			
+			populateHeroList();
+			
 			return null;
+		}
+		
+		private static void populateHeroList() {
+			for (int i = 0; i < cities.size(); i++) {
+				final City city = cities.get(i);
+				for (int j = 0; j < heroes.size(); j++) {
+					final Hero hero = heroes.get(j);
+					if (city.name.equals(hero.location))
+						city.add(hero);
+				}
+			}
 		}
 	}
 }

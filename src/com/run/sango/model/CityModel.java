@@ -17,10 +17,6 @@ public class CityModel extends Node implements Conquerable, Dividable {
 	private byte DEFAULT_TERRITORY_COUNT = 2;
 	protected byte territory = 2;
 	
-	public CityModel(int id, String name) {
-		super(id, name);
-	}
-
 	@Override
 	public void divide() {
 		if (territory == 0)

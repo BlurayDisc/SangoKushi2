@@ -1,14 +1,18 @@
 package com.run.sango.model;
 
-public class General extends GameModel {
+public class Hero extends GameModel {
 
 	public UnitType armyType;
-	public byte leadership, strength, intelligence, politics;
+	public Ability ability;
+	public int leadership = 0, strength = 0, intelligence = 0, politics = 0;
 	public int imageIndex;
+	public String location;
 	
-	public General(int id, String name) {
+	public Hero(int id, String name) {
 		super(id, name);
 	}
+	
+	public Hero() {}
 	
 	@Override
 	public String toString() {

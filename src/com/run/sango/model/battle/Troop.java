@@ -1,27 +1,27 @@
 package com.run.sango.model.battle;
 
-import com.run.sango.model.General;
+import com.run.sango.model.Hero;
 import com.run.sango.model.UnitType;
 
 public class Troop {
 	
-	private final General general;
-	private final General lieutenant;
+	private final Hero general;
+	private final Hero lieutenant;
 	private UnitType type;
 	public int size;
 	
-	public Troop(General general, General lieutenant, UnitType type, int size) {
+	public Troop(Hero general, Hero lieutenant, UnitType type, int size) {
 		this.general = general;
 		this.lieutenant = lieutenant;
 		this.type = type;
 		this.size = size;
 	}
 	
-	public General getGeneral() {
+	public Hero getGeneral() {
 		return general;
 	}
 	
-	public General getLieutenant() {
+	public Hero getLieutenant() {
 		return lieutenant;
 	}
 	

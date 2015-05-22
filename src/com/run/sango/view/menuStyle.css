@@ -43,7 +43,6 @@
 }
  
 .button1{
-	-fx-padding: 5 30 5 30;
     -fx-text-fill: #006464;
     -fx-background-color: #DFB951;
     -fx-border-radius: 20;
@@ -52,7 +51,6 @@
 }
  
 .button2{
-	-fx-padding: 5 30 5 30;
     -fx-text-fill: #c10000;
     -fx-background-color: #DFB951;
     -fx-border-radius: 20;

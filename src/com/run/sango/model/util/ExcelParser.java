@@ -12,9 +12,10 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Row;
 
+import com.run.sango.model.Ability;
 import com.run.sango.model.City;
 import com.run.sango.model.Force;
-import com.run.sango.model.General;
+import com.run.sango.model.Hero;
 import com.run.sango.model.UnitType;
 
 /**
@@ -77,12 +78,13 @@ public class ExcelParser {
 	/**
 	 * Parses the Character data from the Excel file.
 	 */
-	public List<General> loadCharacterData() {
-		final List<General> list = new ArrayList<>(584);
-        for (int i = 1; i < 585; i++) {
-        	final General c = createCharacter(i);
-        	list.add(c);
-	    	logger.info(c);
+	public List<Hero> loadHeroData() {
+		final List<Hero> list = new ArrayList<>(490);
+        for (int i = 1; i < 492; i++) {
+        	final Hero h = new Hero();
+        	list.add(h);
+        	parseHeroData(h, i);
+        	logger.info(h);
         }
         return list;
     }
@@ -92,12 +94,10 @@ public class ExcelParser {
 	 */
 	public List<City> loadCityData() {
 		final List<City> list = new ArrayList<>(40);
-		for (int i = 1; i < 41; i++) {
-	    	final Row row = citySheet.getRow(i);
-	    	final int id = (int) row.getCell(0).getNumericCellValue();
-	    	final String name = row.getCell(1).getStringCellValue();
-	    	final City c = new City(id, name);
+		for (int i = 1; i < 42; i++) {
+	    	final City c = new City();
 	    	list.add(c);
+	    	parseCityData(c, i);
 		}
 		return list;
 	}
@@ -110,32 +110,42 @@ public class ExcelParser {
 	/**
 	 * Creates a single character, it's attributes are parsed from the excel sheet 
 	 * and then stored to a new General object.
-	 * @param i The position (in terms of rows) of this specific character in the 
+	 * @param index The position (in terms of rows) of this specific character in the 
 	 * excel sheet.
-	 * @return The General (Character)
 	 */
-	private General createCharacter(int i) {
+	private void parseHeroData(Hero hero, int index) {
 		
-    	final Row row = characterSheet.getRow(i);
+    	final Row row = characterSheet.getRow(index);
     	final int id = (int) row.getCell(0).getNumericCellValue();
     	final String name = row.getCell(1).getStringCellValue();
     	final String type = row.getCell(2).getStringCellValue();
     	final String ability = row.getCell(3).getStringCellValue();
-    	final byte leadership = (byte) row.getCell(4).getNumericCellValue();
-    	final byte strength = (byte) row.getCell(5).getNumericCellValue();
-    	final byte intelligence = (byte) row.getCell(6).getNumericCellValue();
-    	final byte politics = (byte) row.getCell(7).getNumericCellValue();
+    	final int leadership = (int) row.getCell(4).getNumericCellValue();
+    	final int strength = (int) row.getCell(5).getNumericCellValue();
+    	final int intelligence = (int) row.getCell(6).getNumericCellValue();
+    	final int politics = (int) row.getCell(7).getNumericCellValue();
     	final int imageIndex = (int) row.getCell(8).getNumericCellValue();
+    	final String location = row.getCell(9).getStringCellValue();
     	
-    	final General c = new General(id, name);
-    	parseAbility(ability);
-    	c.armyType = parseType(type);
-    	c.leadership = leadership;
-    	c.strength = strength;
-    	c.intelligence = intelligence;
-    	c.politics = politics;
-    	c.imageIndex = imageIndex;
-    	return c;
+    	hero.id = id;
+    	hero.name = name;
+    	hero.armyType = parseType(type);
+    	hero.ability = parseAbility(ability);
+    	hero.leadership = leadership;
+    	hero.strength = strength;
+    	hero.intelligence = intelligence;
+    	hero.politics = politics;
+    	hero.imageIndex = imageIndex;
+    	hero.location = location;
+	}
+	
+	private void parseCityData(City city, int index) {
+    	final Row row = citySheet.getRow(index);
+    	final int id = (int) row.getCell(0).getNumericCellValue();
+    	final String name = row.getCell(1).getStringCellValue();
+    	
+    	city.id = id;
+    	city.name = name;
 	}
 	
 	private UnitType parseType(String rawType) {
@@ -149,7 +159,7 @@ public class ExcelParser {
 		return type;
 	}
 	
-	private void parseAbility(String ability) {
-		
+	private Ability parseAbility(String ability) {
+		return new Ability();
 	}
 }

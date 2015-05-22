@@ -3,7 +3,7 @@ package com.run.sango.view.scene;
 import com.run.sango.SangokushiFX;
 import com.run.sango.controller.SceneType;
 import com.run.sango.controller.data.GameData;
-import com.run.sango.model.General;
+import com.run.sango.model.Hero;
 
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -35,21 +35,19 @@ public class StartScene extends Scene {
 		Button nextButton = new Button("Next Image");
 		nextButton.getStyleClass().add("button1");
 		nextButton.setOnAction(event -> {
-			final General g = GameData.getGenerals().get(index);
-			final Image image = GameData.getPortrait(g);
+			final Hero hero = GameData.getHeroes().get(index);
+			final Image image = GameData.getPortrait(hero);
 			imageView.setImage(image);
 			index++;
 		});
 		
 	    Button backButton = new Button("Back");
 	    backButton.getStyleClass().add("button2");
-	    backButton.setOnAction(event -> 
-	    	SangokushiFX.controller.switchScene(SceneType.init)
-	    );
+	    backButton.setOnAction(event -> {
+	    	SangokushiFX.controller.switchScene(SceneType.init);
+			GameData.print();
+	    });
 	    
 	    layout.getChildren().addAll(startButton, nextButton, backButton, imageView);
 	}
-	
-	
-
 }
