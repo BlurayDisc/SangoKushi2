@@ -1,10 +1,9 @@
-package com.run.sango.model.util;
+package com.run.sango.controller.data;
 
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,7 +18,7 @@ import com.run.sango.model.Hero;
 import com.run.sango.model.UnitType;
 
 /**
- * <p> This class uses the Apache poi API for parsing an .xls file.
+ * <p> This class uses the Apache POI API for parsing an .xls file.
  * Data sheets are created from an Excel work book and then read
  * in the application's memory. 
  * <p> Character and City object are  created by using the data 
@@ -31,80 +30,92 @@ import com.run.sango.model.UnitType;
 public class ExcelParser {
 
 	private static final Logger logger = LogManager.getLogger(ExcelParser.class);
-	private static final String FILE_NAME = "src/resources/game_data.xls";
-	private HSSFSheet characterSheet;
+	
+	private static final String FILE_READ_SUCCESS = " - successfully read from file: ";
+	private static final String FILE_READ_FAIL = "Unable to locate file: ";
+	private static final String FILE_CLOSE_SUCCESS = " successfully closed.";
+	
+	private static final String HERO_SHEET_NAME = "hero";
+	private static final String CITY_SHEET_NAME = "city";
+	private static final String FORCE_SHEET_NAME = "force";
+	private static final String SHEET_READ_SUCCESS = " - loaded.";
+
+	private HSSFSheet heroSheet;
 	private HSSFSheet citySheet;
+	private HSSFSheet forceSheet;
+
+	public void parseFile(String path) {
+		try (
+			InputStream is = new FileInputStream(path);
+			HSSFWorkbook excelWorkBook = new HSSFWorkbook(is) ) {
+			logger.info(excelWorkBook.getClass().getSimpleName() + 
+					FILE_READ_SUCCESS + path);
+			initDataSheets(excelWorkBook);
+		} catch (IOException ioe) {
+			logger.warn(FILE_READ_FAIL + path + ioe.getCause());
+		} finally {
+			logger.info(HSSFWorkbook.class.getSimpleName() + " " +
+					path + FILE_CLOSE_SUCCESS);
+		}
+	}
 	
 	/**
 	 * Loads the excel work book and it's excel sheets into the memory.
 	 * <p> Parses the excel data into the system's memory from each of 
 	 * the attached Excel Sheets.
 	 */
-	public void initDataSheets() {
+	private void initDataSheets(HSSFWorkbook excelWorkBook) {
+		heroSheet = excelWorkBook.getSheet(HERO_SHEET_NAME);
+		logger.info(
+				heroSheet.getClass().getSimpleName() + ": " + 
+				heroSheet.getSheetName() + SHEET_READ_SUCCESS);
 		
-		initLogger();
+		citySheet = excelWorkBook.getSheet(CITY_SHEET_NAME);
+		logger.info(
+				citySheet.getClass().getSimpleName() + ": " + 
+				citySheet.getSheetName() + SHEET_READ_SUCCESS);
 		
-		try (
-			final InputStream is = new FileInputStream(FILE_NAME);
-			HSSFWorkbook excelWorkBook = new HSSFWorkbook(is) ) {
-			
-			logger.info(excelWorkBook.getClass().getSimpleName() + " - " + 
-					"successfully read from file: " + FILE_NAME);
-			
-			characterSheet = excelWorkBook.getSheet("character");
-			logger.info(characterSheet.getClass().getSimpleName() + ": " + 
-					characterSheet.getSheetName() + " - loaded.");
-			
-			citySheet = excelWorkBook.getSheet("city");
-			logger.info(citySheet.getClass().getSimpleName() + ": " + 
-					citySheet.getSheetName() + " - loaded.");
-			
-		} catch (IOException ioe) {
-			logger.warn("Unable to locate file: " + FILE_NAME + ioe.getCause());
-		} finally {
-			logger.info(HSSFWorkbook.class.getSimpleName() + " " +
-					FILE_NAME + " " + "successfully closed.");
-		}
-	}
-	
-	public void parseFile(String path) {
-		
-	}
-	
-	private static void initLogger() {
-		
+		forceSheet = excelWorkBook.getSheet(FORCE_SHEET_NAME);
+		logger.info(
+				forceSheet.getClass().getSimpleName() + ": " + 
+				forceSheet.getSheetName() + SHEET_READ_SUCCESS);
 	}
 
 	/**
 	 * Parses the Character data from the Excel file.
 	 */
-	public List<Hero> loadHeroData() {
-		final List<Hero> list = new ArrayList<>(490);
-        for (int i = 1; i < 492; i++) {
+	public void loadHeroData(ArrayList<Hero> list) {
+		final int rows = heroSheet.getPhysicalNumberOfRows();
+		list.ensureCapacity(rows - 1);
+        for (int i = 1; i < rows; i++) {
         	final Hero h = new Hero();
         	list.add(h);
         	parseHeroData(h, i);
         	logger.info(h);
         }
-        return list;
     }
 	
 	/**
 	 * Parses the City data from the excel sheet.
 	 */
-	public List<City> loadCityData() {
-		final List<City> list = new ArrayList<>(40);
-		for (int i = 1; i < 42; i++) {
+	public void loadCityData(ArrayList<City> list) {
+		final int rows = citySheet.getPhysicalNumberOfRows();
+		list.ensureCapacity(rows - 1);
+		for (int i = 1; i < rows; i++) {
 	    	final City c = new City();
 	    	list.add(c);
 	    	parseCityData(c, i);
 		}
-		return list;
 	}
 	
-	public List<Force> loadForceData() {
-		final List<Force> list = new ArrayList<>(30);
-		return list;
+	public void loadForceData(ArrayList<Force> list) {
+		final int rows = forceSheet.getPhysicalNumberOfRows();
+		list.ensureCapacity(rows - 1);
+		for (int i = 1; i < rows; i++) {
+	    	final Force f = new Force();
+	    	list.add(f);
+	    	parseForceData(f, i);
+		}
 	}
 	
 	/**
@@ -115,10 +126,10 @@ public class ExcelParser {
 	 */
 	private void parseHeroData(Hero hero, int index) {
 		
-    	final Row row = characterSheet.getRow(index);
+    	final Row row = heroSheet.getRow(index);
     	final int id = (int) row.getCell(0).getNumericCellValue();
     	final String name = row.getCell(1).getStringCellValue();
-    	final String type = row.getCell(2).getStringCellValue();
+    	final String rawtype = row.getCell(2).getStringCellValue();
     	final String ability = row.getCell(3).getStringCellValue();
     	final int leadership = (int) row.getCell(4).getNumericCellValue();
     	final int strength = (int) row.getCell(5).getNumericCellValue();
@@ -129,7 +140,7 @@ public class ExcelParser {
     	
     	hero.id = id;
     	hero.name = name;
-    	hero.armyType = parseType(type);
+    	hero.armyType = parseType(rawtype);
     	hero.ability = parseAbility(ability);
     	hero.leadership = leadership;
     	hero.strength = strength;
@@ -148,13 +159,30 @@ public class ExcelParser {
     	city.name = name;
 	}
 	
+	private void parseForceData(Force force, int index) {
+    	final Row row = forceSheet.getRow(index);
+    	final int id = (int) row.getCell(0).getNumericCellValue();
+    	final String name = row.getCell(1).getStringCellValue();
+    	
+    	force.id = id;
+    	force.name = name;
+	}
+	
 	private UnitType parseType(String rawType) {
 		final UnitType type;
 		switch(rawType) {
-			case "枪兵": type = UnitType.SpearMan; break;
-			case "骑兵": type = UnitType.LightCalvary; break;
-			case "弓兵": type = UnitType.Archer; break;
-			default: type = UnitType.SpearMan; break;
+			case UnitType.SPEAR_MAN_CN: 
+				type = UnitType.SpearMan; 
+				break;
+			case UnitType.CALVARY_CN: 
+				type = UnitType.LightCalvary; 
+				break;
+			case UnitType.ARHCER_CN: 
+				type = UnitType.Archer; 
+				break;
+			default: 
+				type = UnitType.SpearMan; 
+				break;
 		}
 		return type;
 	}

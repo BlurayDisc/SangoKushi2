@@ -22,6 +22,9 @@ public enum UnitType {
 	Halberdier(15);
 	
 	public final int index;
+	public final static String SPEAR_MAN_CN = "Ç¹±ø";
+	public final static String CALVARY_CN = "Æï±ø";
+	public final static String ARHCER_CN = "¹­±ø";
 	
 	UnitType(int index) {
 		this.index = index;

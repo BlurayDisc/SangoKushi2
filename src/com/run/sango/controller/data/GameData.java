@@ -1,5 +1,6 @@
 package com.run.sango.controller.data;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -11,7 +12,6 @@ import javafx.scene.image.Image;
 import com.run.sango.model.Hero;
 import com.run.sango.model.City;
 import com.run.sango.model.Force;
-import com.run.sango.model.util.ExcelParser;
 
 /**
  * Class thats loads game engine and game related data.
@@ -22,17 +22,17 @@ public class GameData {
 	
 	private static final Logger logger = LogManager.getLogger(GameData.class);
 
-	static final String DEFAULT_IMAGE = "file:src/resources/faces/0000_Со·о_";
-	static final String DATA_FILE_PATH = "file:src/resources/game_data.xls";
-	static final String IMAGE_RES_PATH = "file:src/resources/faces/";
-	static final int PORTRAIT = 1, LEFT_FACE = 2;
-	static final String IMAGE_TYPE_JPG = ".jpg";
+	private static final String DEFAULT_IMAGE = "file:src/resources/faces/0000_Со·о_";
+	private static final String DATA_FILE_PATH = "src/resources/game_data.xls";
+	private static final String IMAGE_RES_PATH = "file:src/resources/faces/";
+	private static final int PORTRAIT = 1, LEFT_FACE = 2;
+	private static final String IMAGE_TYPE_JPG = ".jpg";
 	static final String IMAGE_TYPE_PNG = ".png";
-	static final String SEPERATOR = "_";
+	private static final String SEPERATOR = "_";
 	
-	private static List<Force> forces;
-	private static List<City> cities;
-	private static List<Hero> heroes;
+	private static final ArrayList<Force> forces = new ArrayList<>();
+	private static final ArrayList<City> cities = new ArrayList<>();
+	private static final ArrayList<Hero> heroes = new ArrayList<>();
 	
 	/**
 	 * Loads game data in a worker thread.
@@ -153,12 +153,10 @@ public class GameData {
 		protected Void call() throws Exception {
 			
 			final ExcelParser parser = new ExcelParser();
-			parser.parseFile(DATA_FILE_PATH);
-			parser.initDataSheets();
-			
-			heroes = parser.loadHeroData();
-			cities = parser.loadCityData();
-			forces = parser.loadForceData();
+			parser.parseFile(DATA_FILE_PATH);			
+			parser.loadHeroData(heroes);
+			parser.loadCityData(cities);
+			//parser.loadForceData(forces);
 			
 			populateHeroList();
 			

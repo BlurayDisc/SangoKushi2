@@ -5,8 +5,7 @@ public enum FamilyType {
 	Unsigned(0),
 	Farmer(1),
 	Merchant(2),
-	Builder(3),
-	Smith(4);
+	Builder(3);
 	
 	public final int index;
 	

@@ -18,12 +18,12 @@ public class Force extends GameModel {
     private int food;
     private int goldIncome;
     private int foodIncome;
-    private int soldier;
     private int soldierIncome;
-    private int population;
+    
+    private double dispatchCostFactor = 1.0;
        
-    public Force(int id, String name) {
-    	super(id, name);
+    public Force() {
+    	
     }
     
     public String getPrimaryCity() {
@@ -36,20 +36,6 @@ public class Force extends GameModel {
         
     public void increaseFood(int amount) {
         food += amount;
-    }
-    
-    public void calcSoldier() {
-        soldier = 0;        
-        for (City city: cities) {
-            soldier = soldier + city.getSoldiers();
-        }
-    }
-    
-    public void calcPopulation() {
-        population = 0;
-        for (City city: cities) {
-            population = population + city.getPopulation();
-        }
     }
     
     public boolean owns(City city) {
@@ -92,12 +78,30 @@ public class Force extends GameModel {
         this.food = food;
     }
     
-    public int getSoldier() {
-        return soldier;
+    public int getFoodAfterDispatch() {
+    	final int s = getTotalSoldiers();
+    	final double f = dispatchCostFactor;
+    	return food - (int) (s * f);
+    }
+    
+    public int getTotalSoldiers() {
+        int s = 0;        
+        for (int i = 0; i < cities.size(); i++) {
+        	final City c = cities.get(i);
+        	final int cs = c.getSoldiers();
+            s += cs;
+        }
+        return s;
     }
     
     public int getPopulation() {
-        return population;
+        int p = 0;
+        for (int i = 0; i < cities.size(); i++) {
+        	final City c = cities.get(i);
+        	final int cp = c.getPopulation();
+            p += cp;
+        }
+        return p;
     }
     
     public int getGoldIncome() {
@@ -130,5 +134,15 @@ public class Force extends GameModel {
     
     public Color getForceColor() {
         return forceColour;
+    }
+    
+    @Override
+    public String toString() {
+    	final StringBuilder sb = new StringBuilder();
+    	sb.append("Force[").append(name).append("] ")
+    	  .append("Gold[").append(gold).append("] ")
+    	  .append("Food[").append(food).append("] ")
+    	  .append("Soldiers[").append(getTotalSoldiers()).append("]");
+    	return sb.toString();
     }
 }
