@@ -115,6 +115,7 @@ public class ExcelParser {
 	    	final Force f = new Force();
 	    	list.add(f);
 	    	parseForceData(f, i);
+	    	logger.info(f);
 		}
 	}
 	

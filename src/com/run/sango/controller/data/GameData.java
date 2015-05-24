@@ -50,8 +50,7 @@ public class GameData {
 		int total = 0;
 		for (int i = 0; i < cities.size(); i++) {
 			City city = cities.get(i);
-			logger.info(
-				city.name + " " +
+			logger.info(city.name + " " +
 				"heroes : " + city.getNumHeroes());
 			total += city.getNumHeroes();
 		}
@@ -156,7 +155,7 @@ public class GameData {
 			parser.parseFile(DATA_FILE_PATH);			
 			parser.loadHeroData(heroes);
 			parser.loadCityData(cities);
-			//parser.loadForceData(forces);
+			parser.loadForceData(forces);
 			
 			populateHeroList();
 			

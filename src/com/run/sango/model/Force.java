@@ -139,7 +139,8 @@ public class Force extends GameModel {
     @Override
     public String toString() {
     	final StringBuilder sb = new StringBuilder();
-    	sb.append("Force[").append(name).append("] ")
+    	sb.append("Force[").append(id).append("] ")
+    	  .append("Name[").append(name).append("] ")
     	  .append("Gold[").append(gold).append("] ")
     	  .append("Food[").append(food).append("] ")
     	  .append("Soldiers[").append(getTotalSoldiers()).append("]");
