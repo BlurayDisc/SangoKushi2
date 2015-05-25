@@ -34,13 +34,18 @@ public class GameData {
 	private static final ArrayList<City> cities = new ArrayList<>();
 	private static final ArrayList<Hero> heroes = new ArrayList<>();
 	
+	private static boolean initialised = false;
+	
 	/**
 	 * Loads game data in a worker thread.
 	 * <p> The runnable used for the worker thread is the wrapped 
 	 * static LoadGameDataTask class.
+	 * <p> Short circuits the process if data has already been
+	 * initialised.
 	 */
 	public static void load() {
 
+		if (initialised) return;
 		final Thread t = new Thread(new LoadGameDataTask());
 		t.setName("WorkerThread");
 		t.start();
@@ -147,7 +152,7 @@ public class GameData {
 	}
 	
 	private static class LoadGameDataTask extends Task<Void> {
-		
+
 		@Override
 		protected Void call() throws Exception {
 			
@@ -157,12 +162,19 @@ public class GameData {
 			parser.loadCityData(cities);
 			parser.loadForceData(forces);
 			
-			populateHeroList();
+			mapCities();
+			populateCityHeroList();
+			populateForceCityList();
 			
+			initialised = true;
 			return null;
 		}
 		
-		private static void populateHeroList() {
+		private static void mapCities() {
+			logger.info("Successfully created game map.");
+		}
+		
+		private static void populateCityHeroList() {
 			for (int i = 0; i < cities.size(); i++) {
 				final City city = cities.get(i);
 				for (int j = 0; j < heroes.size(); j++) {
@@ -171,6 +183,11 @@ public class GameData {
 						city.add(hero);
 				}
 			}
+			logger.info("Heroes successfully added to cities");
+		}
+		
+		private static void populateForceCityList() {
+			logger.info("Cities successfully added to forces");
 		}
 	}
 }

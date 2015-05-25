@@ -6,71 +6,63 @@ import java.util.Map;
 
 import com.run.sango.model.GameModel;
 
-public class Node extends GameModel implements Linkedable {
+public class Node extends GameModel implements Mappable {
 	
-	private final Map<Direction, Node> nodemap = new HashMap<>();
-
+	private final Map<Direction, Node> neighbours = new HashMap<>();
+	
 	@Override
-	public void attach(Node node, Direction property) {
-		if (node == null)
+	public void attach(Node node, Direction direction) {
+		if (node == null || direction == null)
 			throw new IllegalArgumentException(
-				"The passed in Node has not been initialised!");
-		nodemap.put(property, node);
+			"The passed in Node has not been initialised!");
+		neighbours.put(direction, node);
+		node.neighbours.put(direction.opposite(), this);
+	}
+	
+	@Override
+	public void detach(Direction direction) {
+		final Node node = neighbours.remove(direction);
+		if (node == null) 
+			throw new IllegalArgumentException(
+			"This node is not attached to the passed in direction value");
+		node.neighbours.remove(direction.opposite());
 	}
 	
 	@Override
 	public void detach(Node node) {
-		if (node == null)
+		if (!neighbours.values().remove(node))
 			throw new IllegalArgumentException(
 				"The passed in Node has not been initialised!");
-		nodemap.values().remove(node);
-	}
-
-	@Override
-	public void appendTo(Node node, Direction property) {
-		if (node == null)
-			throw new IllegalArgumentException(
-				"The passed in Node has not been initialised!");
-		node.attach(this, property);
-	}
-
-	@Override
-	public void removeFrom(Node node) {
-		if (node == null)
-			throw new IllegalArgumentException(
-				"The passed in Node has not been initialised!");
-		node.detach(this);
-	}
-	
-	@Override
-	public Direction from(Node node) {
-		for(final Direction d: nodemap.keySet()) {
-			if (nodemap.get(d) == node)
-				return d;
-		}
-		return null;
-	}
-	
-	@Override
-	public Direction to(Node node) {
-		if (node == null)
-			throw new IllegalArgumentException(
-				"The passed in Node has not been initialised!");
-		return node.from(this);
+		node.neighbours.values().remove(this);
 	}
 	
 	@Override
 	public Node retrieveNode(Direction property) {
-		return nodemap.get(property);
+		return neighbours.get(property);
 	}
 
 	@Override
 	public List<Node> getNodes() {
-		return (List<Node>) nodemap.values();
+		return (List<Node>) neighbours.values();
+	}
+	
+	@Override
+	public Direction from(Node node) {
+		for(final Direction d: neighbours.keySet()) {
+			if (neighbours.get(d) == node)
+				return d;
+		}
+		throw new IllegalArgumentException(
+		"This node is not attached to the passed in direction value");
+	}
+	
+	@Override
+	public Direction to(Node node) {
+		return from(node).opposite();
 	}
 	
 	@Override
 	public String toString() {
-		return "Attached Nodes: " + nodemap.toString();
+		return "Attached Nodes: " + neighbours.toString();
 	}
 }
