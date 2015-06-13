@@ -27,14 +27,14 @@ public class AI {
 		this.difficulty = Difficulty.EASY;
 	}
 	
-	public void performLogics() {
+	public void execute() {
 		logger.info(force.toString() + " Current State[" + state + "]");
-		perform();
+		performAction();
 		update();
 		logger.info(force.toString() + " New State[" + state + "]");
 	}
 	
-	private void perform() {
+	private void performAction() {
 		switch(state) {
 			case DEFEATED:
 				break;
@@ -68,14 +68,23 @@ public class AI {
 	 * requirement for entering into the war state.
 	 */
 	private void developCities() {
-		if (cities.size() == 1) {
-			
+		
+		if (cities.size() == 0) {
+			// well, we are fucked.
 		}
 		
 		for (int i = 0; i < cities.size(); i++) {
 			final City city = cities.get(i);
-			int gold = city.getGoldIncome();
-			gold = gold++;
+			if (city.getGoldIncome() < difficulty.goldIncome) {
+				// find a job.
+			}
+			if (city.getFoodIncome() < difficulty.foodIncome) {
+				// farm more rice.
+			}
+			if (city.getSoldiers() < 696969) {
+				// breed more kids.
+			}
+				
 		}
 	}
 	
@@ -84,7 +93,7 @@ public class AI {
 	 * requirement for the state: Conquer.
 	 */
 	private void prepareForWar() {
-		
+		// THIS IS SPARTA.
 	}
 	
 	/**
@@ -93,19 +102,19 @@ public class AI {
 	 * will also change.
 	 */
 	private void conquer() {
-		
+		// conquer ur mum.
 	}
 
 	private boolean metConquerRequirement() {
-		return force.getGold() >= difficulty.cGold &&
-			   force.getFood() >= difficulty.cFood &&
-			   force.getTotalSoldiers() >= difficulty.cUnit;
+		return force.getGold() >= difficulty.conquerGold &&
+			   force.getFood() >= difficulty.conquerFood &&
+			   force.getTotalSoldiers() >= difficulty.conquerUnit;
 	}
 	
 	private boolean metRepareWarRequirement() {
-		return force.getGold() >= difficulty.wGold &&
-			   force.getFood() >= difficulty.wFood &&
-			   force.getTotalSoldiers() >= difficulty.wUnit;
+		return force.getGold() >= difficulty.warGold &&
+			   force.getFood() >= difficulty.warFood &&
+			   force.getTotalSoldiers() >= difficulty.warUnit;
 	}
 	
 	private boolean metDefensiveRequirement() {

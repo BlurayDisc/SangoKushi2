@@ -1,12 +1,12 @@
 package com.run.sango.view.scene;
 
-import com.run.sango.SangokushiFX;
-import com.run.sango.controller.SceneType;
-
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
+
+import com.run.sango.SangokushiFX;
+import com.run.sango.controller.SceneType;
 
 public class LoadScene extends Scene {
 	

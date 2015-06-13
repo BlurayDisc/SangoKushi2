@@ -2,16 +2,19 @@ package com.run.sango.controller.data;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import javafx.concurrent.Task;
 import javafx.scene.image.Image;
 
-import com.run.sango.model.Hero;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import com.run.sango.controller.WorkerThreadFactory;
 import com.run.sango.model.City;
 import com.run.sango.model.Force;
+import com.run.sango.model.Hero;
 
 /**
  * Class thats loads game engine and game related data.
@@ -27,12 +30,16 @@ public class GameData {
 	private static final String IMAGE_RES_PATH = "file:src/resources/faces/";
 	private static final int PORTRAIT = 1, LEFT_FACE = 2;
 	private static final String IMAGE_TYPE_JPG = ".jpg";
-	static final String IMAGE_TYPE_PNG = ".png";
+	//private static final String IMAGE_TYPE_PNG = ".png";
 	private static final String SEPERATOR = "_";
 	
 	private static final ArrayList<Force> forces = new ArrayList<>();
 	private static final ArrayList<City> cities = new ArrayList<>();
 	private static final ArrayList<Hero> heroes = new ArrayList<>();
+	
+	private static final Executor threadPool = 
+						 Executors.newSingleThreadExecutor(
+						 new WorkerThreadFactory());
 	
 	private static boolean initialised = false;
 	
@@ -46,20 +53,7 @@ public class GameData {
 	public static void load() {
 
 		if (initialised) return;
-		final Thread t = new Thread(new LoadGameDataTask());
-		t.setName("WorkerThread");
-		t.start();
-	}
-	
-	public static void print() {
-		int total = 0;
-		for (int i = 0; i < cities.size(); i++) {
-			City city = cities.get(i);
-			logger.info(city.name + " " +
-				"heroes : " + city.getNumHeroes());
-			total += city.getNumHeroes();
-		}
-		logger.info("Total: " + total);
+		threadPool.execute(new GameDataTask());
 	}
 	
 	public static List<Force> getForces() {
@@ -81,7 +75,7 @@ public class GameData {
 	 */
 	public static Image getPortrait(Hero general) {
 		final String filename = toImagePath(
-				general.name, 
+				general.getName(), 
 				general.imageIndex);
 		return loadImage(filename, PORTRAIT);
 	}
@@ -93,7 +87,7 @@ public class GameData {
 	 */
 	public static Image getFacialPortrait(Hero general) {
 		final String filename = toImagePath(
-				general.name, 
+				general.getName(), 
 				general.imageIndex);
 		return loadImage(filename, LEFT_FACE);
 	}
@@ -129,48 +123,47 @@ public class GameData {
 	 * @return the Image.
 	 */
 	private static Image loadImage(String filename, int facetype) {
-		Image img = null;
+		
 		final String filepath = IMAGE_RES_PATH + filename + 
 				facetype + IMAGE_TYPE_JPG;
-		final String defpath = DEFAULT_IMAGE + facetype + 
-				IMAGE_TYPE_JPG;
-		try {
-			img = new Image(filepath, false);
-			if (img == null || img.getException() != null || 
-				img.getHeight() == 0) {
-				logger.info(filepath + " invalid image!");
-				img = new Image(defpath,  false);
-			} else
-				logger.info("File: " + filepath + " " + 
-						"rendered successful.");
-		} catch (RuntimeException e) {
-			logger.info("File: " + filepath + " " +
-					"cannot be found. " + e.getMessage());
-			img = new Image(defpath, true);
+		final Image img = new Image(filepath, false);
+		if (img == null || img.getException() != null || 
+			img.getHeight() == 0) {
+			logger.info(filepath + " invalid path!");
+			final String defpath = DEFAULT_IMAGE + facetype + 
+					IMAGE_TYPE_JPG;
+			return new Image(defpath, false);
 		}
+		logger.info(filepath + " rendered successful.");
 		return img;
 	}
 	
-	private static class LoadGameDataTask extends Task<Void> {
+	private static class GameDataTask extends Task<Void> {
 
 		@Override
 		protected Void call() throws Exception {
 			
 			final ExcelParser parser = new ExcelParser();
-			parser.parseFile(DATA_FILE_PATH);			
+			parser.parseFile(DATA_FILE_PATH);
+			
 			parser.loadHeroData(heroes);
+			
 			parser.loadCityData(cities);
+			
 			parser.loadForceData(forces);
 			
-			mapCities();
+			initialiseMap();
+			
 			populateCityHeroList();
+
 			populateForceCityList();
 			
 			initialised = true;
 			return null;
 		}
 		
-		private static void mapCities() {
+		private static void initialiseMap() throws Exception {
+			Thread.sleep(500);
 			logger.info("Successfully created game map.");
 		}
 		
@@ -179,14 +172,15 @@ public class GameData {
 				final City city = cities.get(i);
 				for (int j = 0; j < heroes.size(); j++) {
 					final Hero hero = heroes.get(j);
-					if (city.name.equals(hero.location))
+					if (city.getName().equals(hero.location))
 						city.add(hero);
 				}
 			}
 			logger.info("Heroes successfully added to cities");
 		}
 		
-		private static void populateForceCityList() {
+		private static void populateForceCityList() throws Exception {
+			Thread.sleep(500);
 			logger.info("Cities successfully added to forces");
 		}
 	}

@@ -12,7 +12,7 @@ import com.run.sango.model.node.Node;
  * @author RuN
  *
  */
-public class CityModel extends Node implements Conquerable, Dividable {
+public class CityModel extends Node implements Dividable, Conquerable {
 	
 	private byte DEFAULT_TERRITORY_COUNT = 2;
 	protected byte territory = 2;
@@ -36,12 +36,12 @@ public class CityModel extends Node implements Conquerable, Dividable {
 	}
 
 	@Override
-	public void conquer(City city) {
-		city.territory--;
+	public void conquer(Dividable dividable) {
+		dividable.divide();
 	}
 
 	@Override
-	public boolean isSeized(City city) {
-		return city.territory == 0;
+	public boolean isSeized(Dividable dividable) {
+		return dividable.isDefeated();
 	}
 }

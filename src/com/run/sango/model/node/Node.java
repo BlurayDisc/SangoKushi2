@@ -61,8 +61,7 @@ public class Node extends GameModel implements Mappable {
 		return from(node).opposite();
 	}
 	
-	@Override
-	public String toString() {
+	public String showAttachedNodes() {
 		return "Attached Nodes: " + neighbours.toString();
 	}
 }

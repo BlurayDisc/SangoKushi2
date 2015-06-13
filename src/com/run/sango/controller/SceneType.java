@@ -4,5 +4,6 @@ public enum SceneType {
 	exit,
 	init,
 	start,
-	load
+	load,
+	heroTable;
 }

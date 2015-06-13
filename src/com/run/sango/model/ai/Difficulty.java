@@ -1,6 +1,11 @@
 package com.run.sango.model.ai;
 
-public class Difficulty {
+public enum Difficulty {
+
+	EASY(0),
+	MEDIUM(3),
+	HARD(5),
+	INSANE(10);
 	
 	static final int FOOD_INCOME_FLOOR = 2000;
 	static final int GOLD_INCOME_FLOOR = 2000;
@@ -14,34 +19,18 @@ public class Difficulty {
 	static final int CONQUER_FOOD_REQUIREMENT = 10000;
 	static final int CONQUER_UNIT_REQUIREMENT = 10000;
 	
-	public static final Difficulty EASY = new Difficulty(
-			CONQUER_GOLD_REQUIREMENT, CONQUER_FOOD_REQUIREMENT, CONQUER_UNIT_REQUIREMENT,
-			WAR_GOLD_REQUIREMENT, WAR_FOOD_REQUIREMENT, WAR_FOOD_REQUIREMENT);
+	public final int conquerGold, conquerFood, conquerUnit;
+	public final int warGold, warFood, warUnit;
+	public final int foodIncome, goldIncome;
 	
-	// MEDIUM
-	public static final Difficulty MEDIUM= new Difficulty(
-			CONQUER_GOLD_REQUIREMENT, CONQUER_FOOD_REQUIREMENT, CONQUER_UNIT_REQUIREMENT,
-			WAR_GOLD_REQUIREMENT, WAR_FOOD_REQUIREMENT, WAR_FOOD_REQUIREMENT);
-	// HARD
-	public static final Difficulty HARD= new Difficulty(
-			CONQUER_GOLD_REQUIREMENT, CONQUER_FOOD_REQUIREMENT, CONQUER_UNIT_REQUIREMENT,
-			WAR_GOLD_REQUIREMENT, WAR_FOOD_REQUIREMENT, WAR_FOOD_REQUIREMENT);
-	
-	// INSANE
-	public static final Difficulty INSANE = new Difficulty(
-			CONQUER_GOLD_REQUIREMENT, CONQUER_FOOD_REQUIREMENT, CONQUER_UNIT_REQUIREMENT,
-			WAR_GOLD_REQUIREMENT, WAR_FOOD_REQUIREMENT, WAR_FOOD_REQUIREMENT);
-	
-	public final int cGold, cFood, cUnit;
-	public final int wGold, wFood, wUnit;
-	
-	Difficulty(int cgold, int cfood, int cunit, 
-			   int wGold, int wFood, int wUnit) {
-		this.cGold = cgold;
-		this.cFood = cfood;
-		this.cUnit = cunit;
-		this.wGold = wGold;
-		this.wFood = wFood;
-		this.wUnit = wUnit;
+	Difficulty(int level) {
+		this.conquerGold = CONQUER_GOLD_REQUIREMENT + level * 1000;
+		this.conquerFood = CONQUER_FOOD_REQUIREMENT + level * 1000;
+		this.conquerUnit = CONQUER_UNIT_REQUIREMENT + level * 1000;
+		this.warGold = WAR_GOLD_REQUIREMENT + level * 1000;
+		this.warFood = WAR_FOOD_REQUIREMENT + level * 1000;
+		this.warUnit = WAR_UNIT_REQUIREMENT + level * 1000;
+		this.foodIncome = FOOD_INCOME_FLOOR + level * 1000;
+		this.goldIncome = GOLD_INCOME_FLOOR + level * 1000;
 	}
 }

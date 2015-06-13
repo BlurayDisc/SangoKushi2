@@ -91,7 +91,6 @@ public class ExcelParser {
         	final Hero h = new Hero();
         	list.add(h);
         	parseHeroData(h, i);
-        	logger.info(h);
         }
     }
 	
@@ -115,7 +114,6 @@ public class ExcelParser {
 	    	final Force f = new Force();
 	    	list.add(f);
 	    	parseForceData(f, i);
-	    	logger.info(f);
 		}
 	}
 	
@@ -139,14 +137,14 @@ public class ExcelParser {
     	final int imageIndex = (int) row.getCell(8).getNumericCellValue();
     	final String location = row.getCell(9).getStringCellValue();
     	
-    	hero.id = id;
-    	hero.name = name;
+    	hero.setId(id);
+    	hero.setName(name);
     	hero.armyType = parseType(rawtype);
     	hero.ability = parseAbility(ability);
-    	hero.leadership = leadership;
-    	hero.strength = strength;
-    	hero.intelligence = intelligence;
-    	hero.politics = politics;
+    	hero.setLeadership(leadership);
+    	hero.setStrength(strength);
+    	hero.setIntelligence(intelligence);
+    	hero.setPolitics(politics);
     	hero.imageIndex = imageIndex;
     	hero.location = location;
 	}
@@ -156,8 +154,8 @@ public class ExcelParser {
     	final int id = (int) row.getCell(0).getNumericCellValue();
     	final String name = row.getCell(1).getStringCellValue();
     	
-    	city.id = id;
-    	city.name = name;
+    	city.setId(id);
+    	city.setName(name);
 	}
 	
 	private void parseForceData(Force force, int index) {
@@ -165,8 +163,8 @@ public class ExcelParser {
     	final int id = (int) row.getCell(0).getNumericCellValue();
     	final String name = row.getCell(1).getStringCellValue();
     	
-    	force.id = id;
-    	force.name = name;
+    	force.setId(id);
+    	force.setName(name);
 	}
 	
 	private UnitType parseType(String rawType) {

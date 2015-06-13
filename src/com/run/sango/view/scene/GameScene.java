@@ -1,38 +1,32 @@
 package com.run.sango.view.scene;
 
-import java.io.FileInputStream;
-import java.io.InputStream;
-
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.layout.StackPane;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
-import javafx.scene.shape.Polygon;
 import javafx.scene.shape.StrokeType;
 
+import com.run.sango.SangokushiFX;
+
 public class GameScene extends Scene {
+	
+	private static final String PATH = "file:src/resources/terrain/Lords_Dirt.JPG";
 
-	public GameScene(double width, double height) {
+	public GameScene() {
 		
-		super(null, width, height);
-
-        try (InputStream is = new FileInputStream("resources/terrain/Lords_Dirt.JPG") ){
-        	
-    		final StackPane layout = new StackPane();
-    		setRoot(layout);
-    		
-    		final Circle circle = new Circle(150, Color.web("white", 0.05));
-    		circle.setStrokeType(StrokeType.OUTSIDE);
-    		circle.setStroke(Color.web("white", 0.16));
-    		circle.setStrokeWidth(4);
-    		layout.getChildren().add(circle);
-        	
-        	final Polygon polygon = new Polygon();
-        	polygon.setFill(new ImagePattern(new Image(is)));
-        	layout.getChildren().add(polygon);
-        } catch (Exception ign) {ign.printStackTrace();}
-        
+		super(new BorderPane(), SangokushiFX.WINDOW_WIDTH, SangokushiFX.WINDOW_HEIGHT);
+		BorderPane layout = (BorderPane) super.getRoot();
+		
+		Circle circle = new Circle(100, Color.web("white", 0.05));
+		circle.setStrokeType(StrokeType.OUTSIDE);
+		circle.setStroke(Color.web("black", 0.16));
+		circle.setStrokeWidth(4);
+		layout.setTop(circle);
+    	
+    	ImageView view = new ImageView();
+    	view.setImage(new Image(PATH, false));
+    	layout.setBottom(view);
 	}
 }

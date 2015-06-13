@@ -9,6 +9,7 @@ import javafx.scene.text.Text;
 
 import com.run.sango.SangokushiFX;
 import com.run.sango.controller.SceneType;
+import com.run.sango.controller.data.GameData;
 
 public class InitScene extends Scene {
 
@@ -25,13 +26,14 @@ public class InitScene extends Scene {
 		
 	    Button startButton = new Button("Start Game");
 	    startButton.getStyleClass().add("button1");
-	    startButton.setOnAction(event -> 
-	    	SangokushiFX.controller.switchScene(SceneType.start)
-	    );
+	    startButton.setOnAction(event -> {
+	    	GameData.load();
+	    	SangokushiFX.controller.switchScene(SceneType.start);
+	    });
 	    
 	    Button loadButton = new Button("Load Game");
 	    loadButton.getStyleClass().add("button1");
-	    loadButton.setOnAction(event ->
+	    loadButton.setOnAction(e ->
 	    	SangokushiFX.controller.switchScene(SceneType.load)
     	);
 	    

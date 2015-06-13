@@ -1,6 +1,5 @@
 package com.run.sango.model;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,16 +23,14 @@ public class City extends CityModel {
 	private int baseFoodIncome;
 	private int baseGoldIncome;
 	private final Map<Integer, Hero> heroes = new HashMap<>();
-	private final int[] soldiers = new int[UnitType.values().length];
-	private final int[] population = new int[FamilyType.values().length];
+	private final Population population = new Population();
+	private final Soldier soldier = new Soldier();
 
 	public City() {
-		Arrays.fill(soldiers, 0);
-		Arrays.fill(population, 0);
 	}
 	
 	public void add(Hero hero) {
-		heroes.put(hero.id, hero);
+		heroes.put(hero.getId(), hero);
 	}
 	
 	/**
@@ -50,11 +47,7 @@ public class City extends CityModel {
 	 * @return
 	 */
 	public int getSoldiers() {
-		int t = 0;
-		for(int s: soldiers) {
-			t += s;
-		}
-		return t;
+		return soldier.getTotal();
 	}
 	
 	/**
@@ -62,11 +55,7 @@ public class City extends CityModel {
 	 * @return
 	 */
 	public int getPopulation() {
-		int t = 0;
-		for (int p: population) {
-			t += p;
-		}
-		return t;
+		return population.getTotal();
 	}
 	
 	/**
@@ -74,8 +63,7 @@ public class City extends CityModel {
 	 * @return
 	 */
 	public int getFoodIncome() {
-		final int numMerchant = population[FamilyType.Merchant.index];
-		return baseFoodIncome + numMerchant * 10;
+		return baseFoodIncome + population.getFoodIncome();
 	}
 	
 	/**
@@ -83,7 +71,15 @@ public class City extends CityModel {
 	 * @return
 	 */
 	public int getGoldIncome() {
-		final int numFarmer = population[FamilyType.Farmer.index];
-		return baseGoldIncome + numFarmer * 10;
+		return baseGoldIncome + population.getGoldIncome();
+	}
+	
+	@Override
+	public String toString() {
+    	final StringBuilder sb = new StringBuilder();
+    	sb.append("City ").append(super.toString()).append(" ")
+    	  .append("Population[").append(population.getTotal()).append("] ")
+    	  .append("Soldiers[").append(soldier.getTotal()).append("]");
+    	return sb.toString();
 	}
 }

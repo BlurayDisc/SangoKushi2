@@ -55,11 +55,11 @@ public class Force extends GameModel {
     }
         
     public String getForceName() {
-        return name;
+        return getName();
     }
     
     public void newForceName(String name) {
-        this.name = name;
+        this.setName(name);
     }
     
     public int getGold() {
@@ -139,8 +139,7 @@ public class Force extends GameModel {
     @Override
     public String toString() {
     	final StringBuilder sb = new StringBuilder();
-    	sb.append("Force[").append(id).append("] ")
-    	  .append("Name[").append(name).append("] ")
+    	sb.append("Force ").append(super.toString()).append(" ")
     	  .append("Gold[").append(gold).append("] ")
     	  .append("Food[").append(food).append("] ")
     	  .append("Soldiers[").append(getTotalSoldiers()).append("]");
